@@ -1,7 +1,7 @@
 pragma solidity ^0.8.10;
 
 import "ds-test/test.sol";
-import "../Fallback/Fallback.sol";
+import "../Fallout/Fallout.sol";
 import "../Fallback/FallbackFactory.sol";
 import "../Ethernaut.sol";
 
@@ -15,7 +15,7 @@ contract FallbackTest is DSTest {
     Ethernaut ethernaut;
     FallbackFactory fallbackFactory;
     address levelAddress;
-    bool levelPass;
+    bool levelSuccessfullyPassed;
 
     function setUp() public {
         // Setup instances of the Ethernaut & FallbackFactory contracts
@@ -23,7 +23,7 @@ contract FallbackTest is DSTest {
         fallbackFactory = new FallbackFactory();
     }
 
-    function testContribute() public {
+    function testFallbackHack() public {
 
         // Register the Ethernaut fallback level (this would have already been done on Rinkeby)
         ethernaut.registerLevel(fallbackFactory);
@@ -36,6 +36,8 @@ contract FallbackTest is DSTest {
 
         // Set up the Level
         levelAddress = ethernaut.createLevelInstance(fallbackFactory);
+
+        // Cast the level address to the Fallback contract class
         Fallback ethernautFallback = Fallback(payable(levelAddress));
 
         // Contribute 1 wei - verify contract state has been updated
@@ -54,13 +56,13 @@ contract FallbackTest is DSTest {
 
 
         // Submit level to the core Ethernaut contract
-        levelPass = ethernaut.submitLevelInstance(payable(levelAddress));
+        levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
 
 
         // Stop the prank - calls with no longer come from address(0) 
         cheats.stopPrank();
 
         // Verify the level has passed
-        assert(levelPass);
+        assert(levelSuccessfullyPassed);
     }
 }
