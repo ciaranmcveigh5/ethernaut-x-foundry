@@ -13,13 +13,14 @@ https://github.com/gakonst/foundry
 
 ## Info
 
-Individual Levels can be found in their repspective folders in ./src ie Fallback is located in ./src/Fallback.sol
+Individual Levels can be found in their respective folders in the ./src folder.  
 
-Tests for each level can be found in ./src/test/[LEVEL_NAME].t.sol ie ./src/test/Fallback.t.sol
+Eg [Fallback is located in ./src/Fallback.sol](src/Fallback/Fallback.sol)
 
-The Factory contracts can be ignored ie ./src/FallbackFactory.sol They are unrelated to the "players" task but required for the Ethernaut core contracts which enable us to verify we have passed the level.
 
-The ./src/Ethernaut.sol & ./src/BaseLevel.sol are also part of the Ethernaut core contracts and so can be ignored by the "player".
+Tests for each level can be found in the ./src/test folder and have the naming convention [LEVEL_NAME].t.sol 
+
+Eg [Fallback test are located in ./src/test/Fallback.t.sol](src/test/Fallback.t.sol)
 
 
 ## Levels
