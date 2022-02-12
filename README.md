@@ -1,11 +1,13 @@
 # ethernaut-x-foundry
 
-Ethernaut puzzles solved & tested with foundry.
+### Ethernaut puzzles solved & tested with foundry.
 
 **Ethernaut**
+
 https://ethernaut.openzeppelin.com/
 
 **Foundry**
+
 https://github.com/gakonst/foundry
 
 
