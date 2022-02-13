@@ -6,7 +6,9 @@ import "../Fallback/FallbackFactory.sol";
 import "../Ethernaut.sol";
 
 interface CheatCodes {
+  // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called  
   function startPrank(address) external;
+  // Resets subsequent calls' msg.sender to be `address(this)`
   function stopPrank() external;
 }
 

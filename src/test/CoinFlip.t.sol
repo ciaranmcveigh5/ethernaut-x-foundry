@@ -5,12 +5,14 @@ import "../CoinFlip/CoinFlip.sol";
 import "../CoinFlip/CoinFlipHack.sol";
 import "../CoinFlip/CoinFlipFactory.sol";
 import "../Ethernaut.sol";
-import 'openzeppelin-contracts/contracts/utils/math/SafeMath.sol'; // Path change of openzeppelin contract
 
 
 interface CheatCodes {
+  // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called  
   function startPrank(address) external;
+  // Resets subsequent calls' msg.sender to be `address(this)`
   function stopPrank() external;
+  // Set block.number
   function roll(uint256) external;
 }
 
