@@ -31,4 +31,6 @@ Eg [Fallback test are located in ./src/test/Fallback.t.sol](src/test/Fallback.t.
 | [2. Fallout](src/Fallout/README.md) |
 | [3. CoinFlip](src/CoinFlip/README.md) |
 | [4. Telephone](src/Telephone/README.md) |
+| [5. Token](src/Token/README.md) |
+
 
