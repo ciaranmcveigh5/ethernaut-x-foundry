@@ -29,4 +29,5 @@ Eg [Fallback test are located in ./src/test/Fallback.t.sol](src/test/Fallback.t.
 | ------------- |
 | [1. Fallback](src/Fallback/README.md) |
 | [2. Fallout](src/Fallout/README.md) |
+| [3. CoinFlip](src/CoinFlip/README.md) |
 
