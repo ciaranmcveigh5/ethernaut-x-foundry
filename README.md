@@ -27,17 +27,17 @@ Eg [Fallback test are located in ./src/test/Fallback.t.sol](src/test/Fallback.t.
 
 | Level | 
 | ------------- |
-| [1. Fallback](src/Fallback/README.md) |
-| [2. Fallout](src/Fallout/README.md) |
-| [3. CoinFlip](src/CoinFlip/README.md) |
-| [4. Telephone](src/Telephone/README.md) |
-| [5. Token](src/Token/README.md) |
-| [6. Delegation](src/Delegation/README.md) |
-| [7. Force](src/Force/README.md) |
-| [8. Vault](src/Vault/README.md) |
-| [9. King](src/King/README.md) |
-| [10. Re-Entrancy](src/Reentrance/README.md) |
-| [11. Elevator](src/Elevator/README.md) |
+| [1. Fallback](src/Fallback) |
+| [2. Fallout](src/Fallout) |
+| [3. CoinFlip](src/CoinFlip) |
+| [4. Telephone](src/Telephone) |
+| [5. Token](src/Token) |
+| [6. Delegation](src/Delegation) |
+| [7. Force](src/Force) |
+| [8. Vault](src/Vault) |
+| [9. King](src/King) |
+| [10. Re-Entrancy](src/Reentrance) |
+| [11. Elevator](src/Elevator) |
 | [12. Privacy](src/Privacy) |
 
 
