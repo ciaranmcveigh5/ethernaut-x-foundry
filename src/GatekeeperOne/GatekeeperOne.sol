@@ -9,8 +9,6 @@ contract GatekeeperOne {
   using SafeMath for uint256;
   address public entrant;
 
-  event GasLeft( uint _value);
-
   modifier gateOne() {
     require(msg.sender != tx.origin);
     _;
