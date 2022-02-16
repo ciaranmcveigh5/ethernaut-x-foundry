@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.10;
 
-import '../BaseLevel.sol';
-import './Force.sol';
+import './BaseLevel.sol';
+import '../Force/Force.sol';
 
 contract ForceFactory is Level {
 

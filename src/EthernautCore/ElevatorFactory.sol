@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.10;
 
-import '../BaseLevel.sol';
-import './Elevator.sol';
+import './BaseLevel.sol';
+import '../Elevator/Elevator.sol';
 
 contract ElevatorFactory is Level {
 

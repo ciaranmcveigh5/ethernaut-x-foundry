@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.10;
 
-import '../BaseLevel.sol';
-import './Delegation.sol';
+import './BaseLevel.sol';
+import '../Delegation/Delegation.sol';
 
 contract DelegationFactory is Level {
 

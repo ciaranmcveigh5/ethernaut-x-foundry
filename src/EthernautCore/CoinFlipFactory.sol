@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.10;
 
-import '../BaseLevel.sol';
-import './CoinFlip.sol';
+import './BaseLevel.sol';
+import '../CoinFlip/CoinFlip.sol';
 
 contract CoinFlipFactory is Level {
 

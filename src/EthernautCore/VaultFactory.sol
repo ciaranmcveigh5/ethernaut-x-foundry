@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.10;
 
-import '../BaseLevel.sol';
-import './Vault.sol';
+import './BaseLevel.sol';
+import '../Vault/Vault.sol';
 
 contract VaultFactory is Level {
 

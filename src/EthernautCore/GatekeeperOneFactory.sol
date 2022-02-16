@@ -2,19 +2,19 @@
 
 pragma solidity ^0.8.10;
 
-import '../BaseLevel.sol';
-import './Telephone.sol';
+import './BaseLevel.sol';
+import '../GatekeeperOne/GatekeeperOne.sol';
 
-contract TelephoneFactory is Level {
+contract GatekeeperOneFactory is Level {
 
   function createInstance(address _player) override public payable returns (address) {
     _player;
-    Telephone instance = new Telephone();
+    GatekeeperOne instance = new GatekeeperOne();
     return address(instance);
   }
 
   function validateInstance(address payable _instance, address _player) override public returns (bool) {
-    Telephone instance = Telephone(_instance);
-    return instance.owner() == _player;
+    GatekeeperOne instance = GatekeeperOne(_instance);
+    return instance.entrant() == _player;
   }
 }
