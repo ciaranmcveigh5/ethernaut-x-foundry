@@ -8,7 +8,7 @@ import "../Ethernaut.sol";
 
 interface CheatCodes {
   // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called, and the tx.origin to be the second input  
-  function startPrank(address, address) external;
+  function startPrank(address) external;
   // Resets subsequent calls' msg.sender to be `address(this)`
   function stopPrank() external;
   // Sets an address' balance
@@ -34,9 +34,10 @@ contract GatekeeperOneTest is DSTest {
 
         GatekeeperOneFactory gatekeeperOneFactory = new GatekeeperOneFactory();
         ethernaut.registerLevel(gatekeeperOneFactory);
-        cheats.startPrank(tx.origin, tx.origin);
+        cheats.startPrank(tx.origin);
         address levelAddress = ethernaut.createLevelInstance(gatekeeperOneFactory);
         GatekeeperOne ethernautGatekeeperOne = GatekeeperOne(payable(levelAddress));
+        cheats.stopPrank();
 
         //////////////////
         // LEVEL ATTACK //
@@ -44,10 +45,6 @@ contract GatekeeperOneTest is DSTest {
 
         // Create GatekeeperOneHack contract
         GatekeeperOneHack gatekeeperOneHack = new GatekeeperOneHack(levelAddress);
-        cheats.stopPrank();
-
-        // Another prank required to make sure tx.origin != msg.sender - on rinkeby this wouldn't be needed
-        cheats.startPrank(eoaAddress, tx.origin);
 
         // Need at 8 byte key that matches the conditions for gate 3 - we start from the fixed value - uint16(uint160(tx.origin) - then work out what the key needs to be
         bytes4 halfKey = bytes4(bytes.concat(bytes2(uint16(0)),bytes2(uint16(uint160(tx.origin)))));
@@ -70,13 +67,11 @@ contract GatekeeperOneTest is DSTest {
             }
         }
         
-        cheats.stopPrank();
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////
 
-        cheats.startPrank(tx.origin, tx.origin);
+        cheats.startPrank(tx.origin);
         bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         cheats.stopPrank();
         assert(levelSuccessfullyPassed);

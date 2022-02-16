@@ -46,6 +46,9 @@ Eg [Fallback test are located in ./src/test/Fallback.t.sol](src/test/Fallback.t.
 | [11. Elevator](src/Elevator) |
 | [12. Privacy](src/Privacy) |
 | [13. GatekeeperOne](src/GatekeeperOne) |
+| [14. GatekeeperTwo](src/GatekeeperTwo) |
+| [15. NaughtCoin](src/NaughtCoin) |
+
 
 
 
