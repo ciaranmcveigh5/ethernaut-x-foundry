@@ -6,7 +6,7 @@ interface IPreservation {
   function setFirstTime(uint256) external;
 }
 
-contract PreservationAttack {
+contract PreservationHack {
     // Same storage layout as contract to be attacked 
     address public timeZone1Library;
     address public timeZone2Library;

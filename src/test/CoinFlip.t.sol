@@ -11,8 +11,6 @@ interface CheatCodes {
   function startPrank(address) external;
   // Resets subsequent calls' msg.sender to be `address(this)`
   function stopPrank() external;
-  // Sets an address' balance
-  function deal(address who, uint256 newBalance) external;
   // Set block.number
   function roll(uint256) external;
 }
@@ -20,13 +18,10 @@ interface CheatCodes {
 contract CoinFlipTest is DSTest {
     CheatCodes cheats = CheatCodes(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
     Ethernaut ethernaut;
-    address eoaAddress = address(100);
 
     function setUp() public {
         // Setup instance of the Ethernaut contracts
         ethernaut = new Ethernaut();
-        // Deal EOA address some ether
-        cheats.deal(eoaAddress, 5 ether);
     }
 
     function testCoinFlipHack() public {
@@ -36,7 +31,7 @@ contract CoinFlipTest is DSTest {
 
         CoinFlipFactory coinFlipFactory = new CoinFlipFactory();
         ethernaut.registerLevel(coinFlipFactory);
-        cheats.startPrank(eoaAddress);
+        cheats.startPrank(tx.origin);
         address levelAddress = ethernaut.createLevelInstance(coinFlipFactory);
         CoinFlip ethernautCoinFlip = CoinFlip(payable(levelAddress));
 

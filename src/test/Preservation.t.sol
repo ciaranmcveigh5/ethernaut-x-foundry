@@ -1,8 +1,7 @@
 pragma solidity ^0.8.10;
 
 import "ds-test/test.sol";
-import "../Preservation/Preservation.sol";
-import "../Preservation/PreservationAttack.sol";
+import "../Preservation/PreservationHack.sol";
 import "../Preservation/PreservationFactory.sol";
 import "../Ethernaut.sol";
 
@@ -19,47 +18,42 @@ interface CheatCodes {
 contract PreservationTest is DSTest {
     CheatCodes cheats = CheatCodes(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
     Ethernaut ethernaut;
-    PreservationAttack preservationAttack;
-    PreservationFactory preservationFactory;
-    address levelAddress;
-    bool levelSuccessfullyPassed;
 
     function setUp() public {
-        // Setup instances of the Ethernaut & PreservationFactory contracts
+        // Setup instance of the Ethernaut contract
         ethernaut = new Ethernaut();
-        preservationFactory = new PreservationFactory();
     }
 
-    function testPreservationAttack() public {
+    function testPreservationHack() public {
+        /////////////////
+        // LEVEL SETUP //
+        /////////////////
 
-        // Register the Ethernaut Preservation level (this would have already been done on Rinkeby)
+        PreservationFactory preservationFactory = new PreservationFactory();
         ethernaut.registerLevel(preservationFactory);
-
-        // Add some ETH to the 0 address which we will be using 
-        payable(address(0)).transfer(1 ether);
-
-        // Use the startPrank cheat which enables us to execute subsequent call as another address (https://onbjerg.github.io/foundry-book/reference/cheatcodes.html)
-        cheats.startPrank(address(0));
-
-        // Set up the Level
-        levelAddress = ethernaut.createLevelInstance(preservationFactory);
+        cheats.startPrank(tx.origin);
+        address levelAddress = ethernaut.createLevelInstance(preservationFactory);
+        Preservation ethernautPreservation = Preservation(payable(levelAddress));
+        
+        //////////////////
+        // LEVEL ATTACK //
+        //////////////////
 
         // Move the block from 0 to 5 to prevent underflow errors
         cheats.roll(5);
 
-        // Create preservationAttack contract
-        preservationAttack = new PreservationAttack(levelAddress);
+        // Create preservationHack contract
+        PreservationHack preservationHack = new PreservationHack(levelAddress);
 
         // Run the attack
-        preservationAttack.attack();        
+        preservationHack.attack();  
 
-        // Submit level to the core Ethernaut contract
-        levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
+        //////////////////////
+        // LEVEL SUBMISSION //
+        //////////////////////   
 
-        // Stop the prank - calls with no longer come from address(0) 
+        bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         cheats.stopPrank();
-
-        // Verify the level has passed
         assert(levelSuccessfullyPassed);
     }
 }

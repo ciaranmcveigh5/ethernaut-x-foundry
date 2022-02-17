@@ -17,13 +17,10 @@ interface CheatCodes {
 contract NaughtCoinTest is DSTest {
     CheatCodes cheats = CheatCodes(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
     Ethernaut ethernaut;
-    address eoaAddress = address(100);
 
     function setUp() public {
         // Setup instance of the Ethernaut contracts
         ethernaut = new Ethernaut();
-        // Deal EOA address some ether
-        cheats.deal(eoaAddress, 5 ether);
     }
 
     function testNaughtCoinHack() public {
