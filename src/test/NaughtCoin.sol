@@ -3,19 +3,10 @@ pragma solidity ^0.8.10;
 import "ds-test/test.sol";
 import "../NaughtCoin/NaughtCoinFactory.sol";
 import "../Ethernaut.sol";
-
-
-interface CheatCodes {
-  // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called, and the tx.origin to be the second input  
-  function startPrank(address) external;
-  // Resets subsequent calls' msg.sender to be `address(this)`
-  function stopPrank() external;
-  // Sets an address' balance
-  function deal(address who, uint256 newBalance) external;
-}
+import "./utils/vm.sol";
 
 contract NaughtCoinTest is DSTest {
-    CheatCodes cheats = CheatCodes(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
+    Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
     Ethernaut ethernaut;
 
     function setUp() public {
@@ -30,7 +21,7 @@ contract NaughtCoinTest is DSTest {
 
         NaughtCoinFactory naughtCoinFactory = new NaughtCoinFactory();
         ethernaut.registerLevel(naughtCoinFactory);
-        cheats.startPrank(tx.origin);
+        vm.startPrank(tx.origin);
         address levelAddress = ethernaut.createLevelInstance(naughtCoinFactory);
         NaughtCoin ethernautNaughtCoin = NaughtCoin(payable(levelAddress));
 
@@ -47,7 +38,7 @@ contract NaughtCoinTest is DSTest {
         //////////////////////
 
         bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
-        cheats.stopPrank();
+        vm.stopPrank();
         assert(levelSuccessfullyPassed);
     }
 }

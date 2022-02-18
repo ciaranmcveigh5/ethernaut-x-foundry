@@ -4,18 +4,10 @@ import "ds-test/test.sol";
 import "../King/KingHack.sol";
 import "../King/KingFactory.sol";
 import "../Ethernaut.sol";
-
-interface CheatCodes {
-  // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called 
-  function startPrank(address) external;
-  // Resets subsequent calls' msg.sender to be `address(this)`
-  function stopPrank() external;
-  // Sets an address' balance
-  function deal(address who, uint256 newBalance) external;
-}
+import "./utils/vm.sol";
 
 contract KingTest is DSTest {
-    CheatCodes cheats = CheatCodes(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
+    Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
     Ethernaut ethernaut;
     address eoaAddress = address(100);
 
@@ -23,7 +15,7 @@ contract KingTest is DSTest {
         // Setup instance of the Ethernaut contract
         ethernaut = new Ethernaut();
         // Deal EOA address some ether
-        cheats.deal(eoaAddress, 5 ether);
+        vm.deal(eoaAddress, 5 ether);
     }
 
     function testKingHack() public {
@@ -33,7 +25,7 @@ contract KingTest is DSTest {
 
         KingFactory kingFactory = new KingFactory();
         ethernaut.registerLevel(kingFactory);
-        cheats.startPrank(eoaAddress);
+        vm.startPrank(eoaAddress);
         address levelAddress = ethernaut.createLevelInstance{value: 1 ether}(kingFactory);
         King ethernautKing = King(payable(levelAddress));
 
@@ -52,7 +44,7 @@ contract KingTest is DSTest {
         //////////////////////
 
         bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
-        cheats.stopPrank();
+        vm.stopPrank();
         assert(levelSuccessfullyPassed);
     }
 }

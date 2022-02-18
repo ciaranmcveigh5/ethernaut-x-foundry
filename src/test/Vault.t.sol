@@ -3,18 +3,10 @@ pragma solidity ^0.8.10;
 import "ds-test/test.sol";
 import "../Vault/VaultFactory.sol";
 import "../Ethernaut.sol";
-
-interface CheatCodes {
-  // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called 
-  function startPrank(address) external;
-  // Resets subsequent calls' msg.sender to be `address(this)`
-  function stopPrank() external;
-  // Loads a storage slot from an address
-  function load(address account, bytes32 slot) external returns (bytes32);
-}
+import "./utils/vm.sol";
 
 contract VaultTest is DSTest {
-    CheatCodes cheats = CheatCodes(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
+    Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
     Ethernaut ethernaut;
 
     function setUp() public {
@@ -29,7 +21,7 @@ contract VaultTest is DSTest {
 
         VaultFactory vaultFactory = new VaultFactory();
         ethernaut.registerLevel(vaultFactory);
-        cheats.startPrank(tx.origin);
+        vm.startPrank(tx.origin);
         address levelAddress = ethernaut.createLevelInstance(vaultFactory);
         Vault ethernautVault = Vault(payable(levelAddress));
 
@@ -38,7 +30,7 @@ contract VaultTest is DSTest {
         //////////////////
 
         // Cheat code to load contract storage at specific slot
-        bytes32 password = cheats.load(levelAddress, bytes32(uint256(1)));
+        bytes32 password = vm.load(levelAddress, bytes32(uint256(1)));
         // Log bytes stored at that memory location
         emit log_bytes(abi.encodePacked(password)); 
 
@@ -64,7 +56,7 @@ contract VaultTest is DSTest {
         //////////////////////
 
         bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
-        cheats.stopPrank();
+        vm.stopPrank();
         assert(levelSuccessfullyPassed);
     }
 }
