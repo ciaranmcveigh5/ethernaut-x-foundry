@@ -61,7 +61,6 @@ contract AlienCodexTest is DSTest {
         //////////////////////
 
         (bool success, bytes memory data) = alienCodex.call(abi.encodeWithSignature("owner()"));
-        emit Response(success, data);
 
         // data is of type bytes32 so the address is padded, byte manipulation to get address
         address refinedData = address(uint160(bytes20(uint160(uint256(bytes32(data)) << 0))));
