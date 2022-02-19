@@ -49,7 +49,13 @@ Eg [Fallback test are located in ./src/test/Fallback.t.sol](src/test/Fallback.t.
 | [14. GatekeeperTwo](src/GatekeeperTwo) |
 | [15. NaughtCoin](src/NaughtCoin) |
 | [16. Preservation](src/Preservation) |
+| [17. Recovery](src/Recovery) |
+| [18. Magic Number](src/MagicNum) |
 | [19. AlienCodex](src/AlienCodex) |
+| [20. Denial](src/Denial) |
+| [21. Shop](src/Shop) |
+| [22. Dex](src/Dex) |
+| [23. Dex Two](src/DexTwo) |
 
 
 ## References

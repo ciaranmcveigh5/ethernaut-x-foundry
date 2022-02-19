@@ -46,10 +46,7 @@ contract AlienCodexTest is DSTest {
         uint codexIndexForSlotZero = ((2 ** 256) - 1) - uint(keccak256(abi.encode(1))) + 1;
 
         // address left padded with 0 to total 32 bytes
-        bytes20 hackerAddress = bytes20(uint160(tx.origin));
-        bytes12 leftPadding = bytes12(0);
-        bytes32 leftPaddedAddress = bytes32(bytes.concat(leftPadding, hackerAddress));
-
+        bytes32 leftPaddedAddress = bytes32(abi.encode(tx.origin));
 
         // must be uint256 in function signature not uint
         // call revise with codex index and content which will set you as the owner
