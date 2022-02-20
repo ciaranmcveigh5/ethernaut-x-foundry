@@ -62,7 +62,7 @@ contract PuzzleWallet {
 
     function deposit() external payable onlyWhitelisted {
       require(address(this).balance <= maxBalance, "Max balance reached");
-      balances[msg.sender] = balances[msg.sender].add(msg.value);
+      balances[msg.sender] += msg.value;
     }
 
     function execute(address to, uint256 value, bytes calldata data) external payable onlyWhitelisted {
@@ -72,7 +72,7 @@ contract PuzzleWallet {
         require(success, "Execution failed");
     }
 
-    function multicall(bytes[2] calldata data) external payable onlyWhitelisted {
+    function multicall(bytes[] calldata data) external payable onlyWhitelisted {
         bool depositCalled = false;
         for (uint256 i = 0; i < data.length; i++) {
             bytes memory _data = data[i];
@@ -86,7 +86,7 @@ contract PuzzleWallet {
                 depositCalled = true;
             }
             (bool success, ) = address(this).delegatecall(data[i]);
-            require(success, "Error while delegating call");
+            // require(success, "Error while delegating call");
         }
     }
 }

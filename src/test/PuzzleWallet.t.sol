@@ -2,7 +2,6 @@ pragma solidity ^0.8.10;
 
 import "ds-test/test.sol";
 import "../PuzzleWallet/PuzzleWalletFactory.sol";
-import "../Ethernaut.sol";
 import "./utils/vm.sol";
 
 contract PuzzleWalletTest is DSTest {
@@ -42,15 +41,21 @@ contract PuzzleWalletTest is DSTest {
 
         emit IsTrue(ethernautPuzzleWallet.whitelisted(eoaAddress));
         ethernautPuzzleWallet.addToWhitelist(eoaAddress);
+        ethernautPuzzleWallet.addToWhitelist(levelAddressWallet);
         emit IsTrue(ethernautPuzzleWallet.whitelisted(eoaAddress));
 
-        bytes memory data1 = abi.encode("deposit");
-        bytes memory data2 = abi.encode("multicall", [[data1]]);
+        bytes memory data1 = abi.encode(abi.encodeWithSignature("deposit()"));
+        bytes memory data2 = abi.encode(abi.encodeWithSignature("multicall(bytes[])", [data1]));
 
-        bytes[] memory data3 = [data1, data2];
+        // bytes memory data3 = abi.encode(
+        //     data1,
+        //     data2
+        // );
+
+        // bytes[] memory data3 = [data1, data2];
 
 
-        ethernautPuzzleWallet.multicall{value: 1 ether}(data3);
+        // ethernautPuzzleWallet.multicall{value: 1 ether}([data1, data2]);
 
         //////////////////////
         // LEVEL SUBMISSION //
