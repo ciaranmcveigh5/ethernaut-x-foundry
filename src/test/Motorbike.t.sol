@@ -20,8 +20,9 @@ contract MotorbikeTest is DSTest {
         // LEVEL SETUP //
         /////////////////
 
-        
-        
+        Engine engine = new Engine();
+        Motorbike motorbike = new Motorbike(address(engine));
+
         vm.startPrank(eoaAddress);
         
         
@@ -30,6 +31,7 @@ contract MotorbikeTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
+        motorbike.greetMe();
         
 
         //////////////////////
