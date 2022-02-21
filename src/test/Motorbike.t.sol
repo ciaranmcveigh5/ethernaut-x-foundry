@@ -31,7 +31,7 @@ contract MotorbikeTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        motorbike.greetMe();
+        // motorbike.greetMe();
         
 
         //////////////////////
