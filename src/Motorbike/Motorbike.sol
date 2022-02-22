@@ -114,7 +114,10 @@ contract Engine is Initializable {
 
 contract BikeExy {
 
+    event Who(address);
+
     function initialize() external {
+        emit Who(msg.sender);
         selfdestruct(payable(msg.sender));
     }
 }

