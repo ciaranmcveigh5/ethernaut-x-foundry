@@ -56,6 +56,7 @@ Eg [Fallback test are located in ./src/test/Fallback.t.sol](src/test/Fallback.t.
 | [21. Shop](src/Shop) |
 | [22. Dex](src/Dex) |
 | [23. Dex Two](src/DexTwo) |
+| [24. PuzzleWallet](src/PuzzleWallet) |
 
 
 ## References
