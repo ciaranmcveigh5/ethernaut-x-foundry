@@ -39,6 +39,8 @@ contract PuzzleWallet {
     mapping(address => bool) public whitelisted;
     mapping(address => uint256) public balances;
 
+    event Amount(uint256);
+
     function init(uint256 _maxBalance) public {
         require(maxBalance == 0, "Already initialized");
         maxBalance = _maxBalance;
@@ -60,7 +62,8 @@ contract PuzzleWallet {
         whitelisted[addr] = true;
     }
 
-    function deposit() external payable onlyWhitelisted {
+    function deposit() external payable onlyWhitelisted {   
+      emit Amount(msg.value);
       require(address(this).balance <= maxBalance, "Max balance reached");
       balances[msg.sender] += msg.value;
     }
@@ -74,6 +77,7 @@ contract PuzzleWallet {
 
     function multicall(bytes[] calldata data) external payable onlyWhitelisted {
         bool depositCalled = false;
+        emit Amount(msg.value);
         for (uint256 i = 0; i < data.length; i++) {
             bytes memory _data = data[i];
             bytes4 selector;

