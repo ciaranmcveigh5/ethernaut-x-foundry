@@ -25,7 +25,7 @@ contract MotorbikeTest is DSTest {
         Engine ethernautEngine = Engine(payable(address(motorbike)));
 
 
-        // vm.startPrank(eoaAddress);
+        vm.startPrank(eoaAddress);
         
         ethernautEngine.greetMe();
 
@@ -41,7 +41,6 @@ contract MotorbikeTest is DSTest {
         emit log_address(address(ethernautEngine));
 
         
-
         engine.upgradeToAndCall(address(bikeExy), initEncoded);
 
         ethernautEngine.greetMe();
@@ -58,7 +57,7 @@ contract MotorbikeTest is DSTest {
         //////////////////////
 
         // bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
-        // vm.stopPrank();
+        vm.stopPrank();
         // assert(levelSuccessfullyPassed);
     }
 }

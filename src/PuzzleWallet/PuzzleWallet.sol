@@ -82,7 +82,7 @@ contract PuzzleWallet {
             bytes memory _data = data[i];
             bytes4 selector;
             assembly {
-                selector := mload(add(_data, 32))
+                selector := mload(add(_data, 32)) // why is _data + 32 the memory location for the selector
             }
             if (selector == this.deposit.selector) {
                 require(!depositCalled, "Deposit can only be called once");

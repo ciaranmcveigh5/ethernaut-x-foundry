@@ -57,6 +57,7 @@ contract Engine is Initializable {
     address public upgrader;
     uint256 public horsePower;
 
+    event Who(address);
 
     struct AddressSlot {
         address value;
@@ -87,6 +88,7 @@ contract Engine is Initializable {
         // Initial upgrade and setup call
         _setImplementation(newImplementation);
         if (data.length > 0) {
+            emit Who(msg.sender);
             (bool success,) = newImplementation.delegatecall(data);
             require(success, "Call failed");
         }
