@@ -1,4 +1,4 @@
-# 19. AlienCodex
+# 24. PuzzleWallet
 
 **NOTE** - This level required some alterations such as including a old version of the openzepplin library within the folder, the principals of the task remain the same. 
 
