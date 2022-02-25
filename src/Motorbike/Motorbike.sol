@@ -57,8 +57,6 @@ contract Engine is Initializable {
     address public upgrader;
     uint256 public horsePower;
 
-    event Who(address);
-
     struct AddressSlot {
         address value;
     }
@@ -88,7 +86,6 @@ contract Engine is Initializable {
         // Initial upgrade and setup call
         _setImplementation(newImplementation);
         if (data.length > 0) {
-            emit Who(msg.sender);
             (bool success,) = newImplementation.delegatecall(data);
             require(success, "Call failed");
         }
@@ -115,11 +112,7 @@ contract Engine is Initializable {
 
 
 contract BikeExy {
-
-    event Who(address);
-
     function initialize() external {
-        emit Who(msg.sender);
         selfdestruct(payable(msg.sender));
     }
 }

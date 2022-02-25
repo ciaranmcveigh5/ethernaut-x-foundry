@@ -49,6 +49,7 @@ contract FallbackTest is DSTest {
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////
+        
 
         bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();
