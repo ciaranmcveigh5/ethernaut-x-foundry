@@ -10,6 +10,11 @@ https://ethernaut.openzeppelin.com/
 
 https://github.com/gakonst/foundry
 
+## Setup 
+
+@0xEval has written an excellent run through of how the repo is configured and how to get setup on it.
+
+https://eval.hashnode.dev/ethernaut-x-foundry-0x0-hello-ethernaut
 
 ## Info
 
