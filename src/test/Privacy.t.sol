@@ -3,7 +3,7 @@ pragma solidity ^0.8.10;
 import "ds-test/test.sol";
 import "../Privacy/PrivacyFactory.sol";
 import "../Ethernaut.sol";
-import "./utils/vm.sol";
+import "forge-std/Vm.sol";
 
 contract PrivacyTest is DSTest {
     Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
@@ -32,7 +32,7 @@ contract PrivacyTest is DSTest {
         // Cheat code to load contract storage at specific slot
         bytes32 secretData = vm.load(levelAddress, bytes32(uint256(5)));
         // Log bytes stored at that memory location
-        emit log_bytes(abi.encodePacked(secretData)); 
+        emit log_bytes(abi.encodePacked(secretData));
 
         // Not relevant to completing the level but shows how we can split a bytes32 into its component parts
         bytes16[2] memory secretDataSplit = [bytes16(0), 0];

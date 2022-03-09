@@ -2,7 +2,7 @@ pragma solidity ^0.8.10;
 
 import "ds-test/test.sol";
 import "../Ethernaut.sol";
-import "./utils/vm.sol";
+import "forge-std/Vm.sol";
 
 
 contract AlienCodexTest is DSTest {

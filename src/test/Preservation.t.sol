@@ -4,7 +4,7 @@ import "ds-test/test.sol";
 import "../Preservation/PreservationHack.sol";
 import "../Preservation/PreservationFactory.sol";
 import "../Ethernaut.sol";
-import "./utils/vm.sol";
+import "forge-std/Vm.sol";
 
 contract PreservationTest is DSTest {
     Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
@@ -25,7 +25,7 @@ contract PreservationTest is DSTest {
         vm.startPrank(tx.origin);
         address levelAddress = ethernaut.createLevelInstance(preservationFactory);
         Preservation ethernautPreservation = Preservation(payable(levelAddress));
-        
+
         //////////////////
         // LEVEL ATTACK //
         //////////////////
@@ -37,11 +37,11 @@ contract PreservationTest is DSTest {
         PreservationHack preservationHack = new PreservationHack(levelAddress);
 
         // Run the attack
-        preservationHack.attack();  
+        preservationHack.attack();
 
         //////////////////////
         // LEVEL SUBMISSION //
-        //////////////////////   
+        //////////////////////
 
         bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();
