@@ -16,7 +16,7 @@ contract TokenFactory is Level {
     return address(token);
   }
 
-  function validateInstance(address payable _instance, address _player) override public returns (bool) {
+  function validateInstance(address payable _instance, address _player) override public view returns (bool) {
     Token token = Token(_instance);
     return token.balanceOf(_player) > playerSupply;
   }

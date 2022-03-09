@@ -12,7 +12,7 @@ contract RecoveryFactory is Level {
   function createInstance(address _player) override public payable returns (address) {
     Recovery recoveryInstance;
     recoveryInstance = new Recovery();
-    // create a simple token 
+    // create a simple token
     recoveryInstance.generateToken("InitialToken", uint(100000));
     // the lost address
     lostAddress[address(recoveryInstance)] = address(uint160(uint256(keccak256(abi.encodePacked(uint8(0xd6), uint8(0x94), recoveryInstance, uint8(0x01))))));
@@ -23,7 +23,7 @@ contract RecoveryFactory is Level {
     return address(recoveryInstance);
   }
 
-  function validateInstance(address payable _instance, address) override public returns (bool) {
+  function validateInstance(address payable _instance, address) override public view returns (bool) {
     return address(lostAddress[_instance]).balance == 0;
   }
 }

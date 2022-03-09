@@ -15,7 +15,7 @@ contract DexTwoFactory is Level {
     address token_instance_address = address(token_instance);
     address token_instance_two_address = address(token_instance_two);
     DexTwo instance = new DexTwo(token_instance_address, token_instance_two_address);
-    
+
     token_instance.approve(address(instance), 100);
     token_instance_two.approve(address(instance), 100);
     instance.add_liquidity(address(token_instance), 100);
@@ -25,7 +25,7 @@ contract DexTwoFactory is Level {
     return address(instance);
   }
 
-  function validateInstance(address payable _instance, address) override public returns (bool) {
+  function validateInstance(address payable _instance, address) override public view returns (bool) {
     address token1 = DexTwo(_instance).token1();
     address token2 = DexTwo(_instance).token2();
     return IERC20(token1).balanceOf(_instance) == 0 && ERC20(token2).balanceOf(_instance) == 0;
