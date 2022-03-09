@@ -9,11 +9,11 @@ contract DexTwoHack {
         dexTwo = _dexTwo;
     }
 
-    function balanceOf(address) public view returns(uint balance){
+    function balanceOf(address) public pure returns(uint balance){
         balance = 1;
     }
 
-    function transferFrom(address from, address to, uint amount) public returns(bool) {
+    function transferFrom(address from, address to, uint amount) public pure returns(bool) {
         return true;
     }
 

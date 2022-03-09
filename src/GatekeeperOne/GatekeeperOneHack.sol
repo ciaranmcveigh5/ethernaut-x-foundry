@@ -47,7 +47,7 @@ contract GatekeeperOneHack {
     }
 
     function testenter(bytes8 _gateKey)
-        public 
+        public view
         // gateOne
         // gateTwo
         gateThree(_gateKey)

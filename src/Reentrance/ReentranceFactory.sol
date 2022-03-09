@@ -18,7 +18,7 @@ contract ReentranceFactory is Level {
     return address(instance);
   }
 
-  function validateInstance(address payable _instance, address _player) override public returns (bool) {
+  function validateInstance(address payable _instance, address _player) override public view returns (bool) {
     _player;
     Reentrance instance = Reentrance(_instance);
     return address(instance).balance == 0;
