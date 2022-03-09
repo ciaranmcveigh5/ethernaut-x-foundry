@@ -3,7 +3,7 @@ pragma solidity ^0.8.10;
 import "ds-test/test.sol";
 import "../MagicNum/MagicNumFactory.sol";
 import "../Ethernaut.sol";
-import "./utils/vm.sol";
+import "forge-std/Vm.sol";
 
 contract MagicNumTest is DSTest {
     Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
@@ -37,7 +37,7 @@ contract MagicNumTest is DSTest {
         // 39   -- codecopy
         // 600a -- push amount of bytes to return
         // 6000 -- memory address to start returning from
-        // f3   -- return 
+        // f3   -- return
         // RUNTIME CODE
         // 602a -- push value to return (42 in decimal)
         // 6080 -- push mem address to store

@@ -4,7 +4,7 @@ import "ds-test/test.sol";
 import "../Force/ForceHack.sol";
 import "../Force/ForceFactory.sol";
 import "../Ethernaut.sol";
-import "./utils/vm.sol";
+import "forge-std/Vm.sol";
 
 contract ForceTest is DSTest {
     Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));

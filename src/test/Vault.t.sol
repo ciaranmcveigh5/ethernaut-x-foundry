@@ -3,7 +3,7 @@ pragma solidity ^0.8.10;
 import "ds-test/test.sol";
 import "../Vault/VaultFactory.sol";
 import "../Ethernaut.sol";
-import "./utils/vm.sol";
+import "forge-std/Vm.sol";
 
 contract VaultTest is DSTest {
     Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
@@ -32,7 +32,7 @@ contract VaultTest is DSTest {
         // Cheat code to load contract storage at specific slot
         bytes32 password = vm.load(levelAddress, bytes32(uint256(1)));
         // Log bytes stored at that memory location
-        emit log_bytes(abi.encodePacked(password)); 
+        emit log_bytes(abi.encodePacked(password));
 
 
         // The following lines just convert from bytes32 to a string and logs it so you can see that the password we have obtained is correct

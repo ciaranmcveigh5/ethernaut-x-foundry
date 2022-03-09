@@ -4,7 +4,7 @@ import "ds-test/test.sol";
 import "../Denial/DenialHack.sol";
 import "../Denial/DenialFactory.sol";
 import "../Ethernaut.sol";
-import "./utils/vm.sol";
+import "forge-std/Vm.sol";
 
 
 contract DenialTest is DSTest {
@@ -36,7 +36,7 @@ contract DenialTest is DSTest {
 
         // Create DenialHack Contract
         DenialHack denialHack = new DenialHack();
-        
+
         // set withdraw parter. callback function will waste all pased gas when admin calls "withdraw"
         ethernautDenial.setWithdrawPartner(address(denialHack));
 

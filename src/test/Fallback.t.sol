@@ -3,7 +3,7 @@ pragma solidity ^0.8.10;
 import "ds-test/test.sol";
 import "../Fallback/FallbackFactory.sol";
 import "../Ethernaut.sol";
-import "./utils/vm.sol";
+import "forge-std/Vm.sol";
 
 contract FallbackTest is DSTest {
     Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
@@ -49,7 +49,7 @@ contract FallbackTest is DSTest {
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////
-        
+
 
         bool levelSuccessfullyPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();
