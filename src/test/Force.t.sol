@@ -35,10 +35,6 @@ contract ForceTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        // Create the attacking contract which will self destruct and send ether to the Force contract
-        ForceHack forceHack = (new ForceHack){value: 0.1 ether}(payable(levelAddress));
-
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////

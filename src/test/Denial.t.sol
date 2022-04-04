@@ -34,12 +34,6 @@ contract DenialTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        // Create DenialHack Contract
-        DenialHack denialHack = new DenialHack();
-        
-        // set withdraw parter. callback function will waste all pased gas when admin calls "withdraw"
-        ethernautDenial.setWithdrawPartner(address(denialHack));
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////

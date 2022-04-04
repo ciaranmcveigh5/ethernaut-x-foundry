@@ -33,12 +33,6 @@ contract KingTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        // Create KingHack Contract
-        KingHack kingHack = new KingHack(payable(levelAddress));
-
-        // Call the attack function the recieve function in the KingHack contract will prevent others from becoming king
-        kingHack.attack{value: 1 ether}();
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////

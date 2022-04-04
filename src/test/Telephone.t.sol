@@ -32,11 +32,6 @@ contract TelephoneTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        // Create TelephoneHack contract
-        TelephoneHack telephoneHack = new TelephoneHack(levelAddress);
-        // Call the attack function
-        telephoneHack.attack();
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////

@@ -33,12 +33,6 @@ contract ReentranceTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        // Create ReentranceHack contract
-        ReentranceHack reentranceHack = new ReentranceHack(levelAddress);
-
-        // Call the attack function to drain the contract
-        reentranceHack.attack{value: 0.4 ether}();
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////

@@ -1,6 +1,6 @@
 # ethernaut-x-foundry
 
-## Ethernaut puzzles solved & tested with foundry.
+## Ethernaut puzzles setup to be solved & tested with foundry
 
 **Ethernaut**
 
@@ -11,6 +11,10 @@ https://ethernaut.openzeppelin.com/
 https://github.com/gakonst/foundry
 
 ## Setup 
+
+Forked the repo from <https://github.com/ciaranmcveigh5/ethernaut-x-foundry> and deleted all Hack contracts and wiped attack sections from test files.
+
+Just fork this repo and solve the puzzles!
 
 @0xEval has written an excellent run through of how the repo is configured and how to get setup on it.
 

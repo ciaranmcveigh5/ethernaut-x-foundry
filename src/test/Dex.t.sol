@@ -27,17 +27,6 @@ contract DexTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        // Create DexHack Contract
-        DexHack dexHack = new DexHack(ethernautDex);
-        
-        // give the attack contract the balance
-        IERC20(ethernautDex.token1()).transfer(address(dexHack), IERC20(ethernautDex.token1()).balanceOf(address(this)));
-        IERC20(ethernautDex.token2()).transfer(address(dexHack), IERC20(ethernautDex.token2()).balanceOf(address(this)));
-
-        // Call the attack function
-        dexHack.attack();
-
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////

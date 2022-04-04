@@ -30,19 +30,6 @@ contract CoinFlipTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        // Move the block from 0 to 5 to prevent underflow errors
-        vm.roll(5);
-
-        // Create coinFlipHack contract
-        CoinFlipHack coinFlipHack = new CoinFlipHack(levelAddress);
-
-        // Run the attack 10 times, iterate the block each time, function can only be called once per block
-        for (uint i = 0; i <= 10; i++) { 
-            // Must be on latest version of foundry - blockhash was defaulting to 0 in earlier version of foundry resolved in this commit https://github.com/gakonst/foundry/pull/728
-            vm.roll(6 + i);
-            coinFlipHack.attack();        
-        }
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////

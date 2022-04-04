@@ -30,15 +30,6 @@ contract PreservationTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        // Move the block from 0 to 5 to prevent underflow errors
-        vm.roll(5);
-
-        // Create preservationHack contract
-        PreservationHack preservationHack = new PreservationHack(levelAddress);
-
-        // Run the attack
-        preservationHack.attack();  
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////   

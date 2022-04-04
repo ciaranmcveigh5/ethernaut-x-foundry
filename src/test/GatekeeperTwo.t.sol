@@ -31,11 +31,6 @@ contract GatekeeperTwoTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-    
-        // Create attacking contract - attack is inside the constructor so no need to call any subsequent functions
-        GatekeeperTwoHack gatekeeperTwoHack = new GatekeeperTwoHack(levelAddress);
-        
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////

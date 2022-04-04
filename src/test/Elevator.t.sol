@@ -27,13 +27,6 @@ contract ElevatorTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        // Create ElevatorHack contract
-        ElevatorHack elevatorHack = new ElevatorHack(levelAddress);
-
-        // Call the attack function
-        elevatorHack.attack();
-
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////

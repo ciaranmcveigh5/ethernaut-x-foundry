@@ -30,12 +30,6 @@ contract ShopTest is DSTest {
         // LEVEL ATTACK //
         //////////////////
 
-        // Create ShopHack Contract
-        ShopHack shopHack = new ShopHack(ethernautShop);
-
-        // attack Shop contract.
-        shopHack.attack();
-
         //////////////////////
         // LEVEL SUBMISSION //
         //////////////////////
