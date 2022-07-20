@@ -8,7 +8,7 @@ https://ethernaut.openzeppelin.com/
 
 **Foundry**
 
-https://github.com/gakonst/foundry
+https://github.com/foundry-rs/foundry
 
 ## Setup 
 
