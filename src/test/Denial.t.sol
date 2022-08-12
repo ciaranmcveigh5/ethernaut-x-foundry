@@ -1,14 +1,11 @@
 pragma solidity ^0.8.10;
 
-import "ds-test/test.sol";
+import "forge-std/Test.sol";
 import "../Denial/DenialHack.sol";
 import "../Denial/DenialFactory.sol";
 import "../Ethernaut.sol";
-import "./utils/vm.sol";
 
-
-contract DenialTest is DSTest {
-    Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
+contract DenialTest is Test {
     Ethernaut ethernaut;
     address eoaAddress = address(0);
 
@@ -36,7 +33,7 @@ contract DenialTest is DSTest {
 
         // Create DenialHack Contract
         DenialHack denialHack = new DenialHack();
-        
+
         // set withdraw parter. callback function will waste all pased gas when admin calls "withdraw"
         ethernautDenial.setWithdrawPartner(address(denialHack));
 

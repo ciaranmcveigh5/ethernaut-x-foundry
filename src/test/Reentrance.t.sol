@@ -1,13 +1,11 @@
 pragma solidity ^0.8.10;
 
-import "ds-test/test.sol";
+import "forge-std/Test.sol";
 import "../Reentrance/ReentranceHack.sol";
 import "../Reentrance/ReentranceFactory.sol";
 import "../Ethernaut.sol";
-import "./utils/vm.sol";
 
-contract ReentranceTest is DSTest {
-    Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
+contract ReentranceTest is Test {
     Ethernaut ethernaut;
     address eoaAddress = address(100);
 
