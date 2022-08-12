@@ -1,12 +1,10 @@
 pragma solidity ^0.8.10;
 
-import "ds-test/test.sol";
+import "forge-std/Test.sol";
 import "../Token/TokenFactory.sol";
 import "../Ethernaut.sol";
-import "./utils/vm.sol";
 
-contract TokenTest is DSTest {
-    Vm vm = Vm(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
+contract TokenTest is Test {
     Ethernaut ethernaut;
     address eoaAddress = address(100);
 
@@ -36,7 +34,7 @@ contract TokenTest is DSTest {
         // Change accounts from the level was set up with, have to call the transfer function from a different account
         vm.startPrank(address(1));
 
-        // Transfer maximum amount of tokens without causing an overflow 
+        // Transfer maximum amount of tokens without causing an overflow
         ethernautToken.transfer(eoaAddress, (2**256 - 21));
 
         // Switch back to original account
