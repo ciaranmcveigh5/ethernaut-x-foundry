@@ -20,7 +20,7 @@ import 'openzeppelin-contracts/contracts/token/ERC20/ERC20.sol';
     // _totalSupply = INITIAL_SUPPLY;
     // _balances[player] = INITIAL_SUPPLY;
     _mint(player, INITIAL_SUPPLY);
-    emit Transfer(address(0), player, INITIAL_SUPPLY);
+    emit Transfer(address(0), _player, INITIAL_SUPPLY);
   }
   
   function transfer(address _to, uint256 _value) override public lockTokens returns(bool) {
